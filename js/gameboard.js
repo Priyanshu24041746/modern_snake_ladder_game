@@ -923,7 +923,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Home button
         homeBtn.addEventListener('click', () => {
-            window.location.href = 'landing.html';
+            window.location.href = 'index.html';
         });
         
         // Close modal buttons
@@ -962,7 +962,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         returnHomeBtn.addEventListener('click', () => {
-            window.location.href = 'landing.html';
+            window.location.href = 'index.html';
         });
         
         // Theme toggle
