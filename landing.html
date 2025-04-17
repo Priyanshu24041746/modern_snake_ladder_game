@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake and Ladder - Modern Board Game Experience</title>
+    <link rel="stylesheet" href="css/landing.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+        <div class="toggle-ball"></div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/snake_and_ladder.png" alt="Snake and Ladder Logo">
+                <h1>Snake & Ladder</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="how_to_play.html">How to Play</a>
+                <a href="#" class="profile-link"><img src="assets/profile.png" alt="Profile" class="profile-icon"></a>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main>
+            <div class="main-content">
+                <section class="hero">
+                    <div class="hero-content">
+                        <span class="hero-badge">New Experience</span>
+                        <h2>Classic Fun, <span class="highlight">Modern Twist</span></h2>
+                        <p>Climb ladders, avoid snakes, and discover mysterious challenges in this reimagined classic board game!</p>
+                        <div class="hero-buttons">
+                            <a href="gamesetup.html" id="play-btn" class="btn primary-btn pulse-animation"><i class="fas fa-play"></i> Play Now</a>
+                            <a href="how_to_play.html" id="how-to-play-btn" class="btn secondary-btn"><i class="fas fa-question-circle"></i> How to Play</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="game-board-container">
+                            <img src="assets/board.png" alt="Game Board" class="game-board">
+                            <div class="dice-container">
+                                <img src="assets/dice.png" alt="Dice" class="dice">
+                            </div>
+                            <div class="board-overlay"></div>
+                        </div>
+                        <div class="floating-emoji emoji-1">
+                            <img src="assets/happy.png" alt="Happy">
+                        </div>
+                        <div class="floating-emoji emoji-2">
+                            <img src="assets/emoji_surprised.png" alt="Surprised">
+                        </div>
+                        <div class="floating-emoji emoji-3">
+                            <img src="assets/emoji_angry.png" alt="Angry">
+                        </div>
+                        <div class="floating-emoji emoji-4">
+                            <img src="assets/emoji_sorry.png" alt="Sorry">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="features">
+                    <h2 class="section-title">Game Features</h2>
+                    <div class="feature-cards">
+                        <div class="feature-card ladder-card">
+                            <div class="feature-icon">
+                                <img src="assets/ladder.png" alt="Ladder">
+                            </div>
+                            <div class="card-content">
+                                <h3>Climbing Ladders</h3>
+                                <p>Climb to victory with strategic shortcuts</p>
+                            </div>
+                            <div class="card-effect ladder-effect">
+                                <img src="assets/stairs.png" alt="Stairs Effect" class="effect-icon">
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card mystery-card">
+                            <div class="feature-icon">
+                                <img src="assets/mystery.png" alt="Mystery">
+                            </div>
+                            <div class="card-content">
+                                <h3>Mystery Challenges</h3>
+                                <p>Accept for rewards or penalties, reject to see what you missed!</p>
+                            </div>
+                            <div class="card-effect mystery-effect">
+                                <div class="mystery-choice">
+                                    <span class="choice-yes">✓</span>
+                                    <span class="choice-no">✗</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card snake-card">
+                            <div class="feature-icon">
+                                <img src="assets/snake.png" alt="Snake">
+                            </div>
+                            <div class="card-content">
+                                <h3>Slippery Snakes</h3>
+                                <p>Avoid the traps that send you back</p>
+                            </div>
+                            <div class="card-effect snake-effect">
+                                <img src="assets/king_cobra.png" alt="Snake Effect" class="effect-icon">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="game-modes-section">
+                    <h2 class="section-title">Play Your Way</h2>
+                    <div class="mode-cards">
+                        <div class="mode-card">
+                            <div class="mode-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h3>Single Player</h3>
+                            <p>Challenge the computer with adaptive AI difficulty</p>
+                            <a href="#" class="btn mode-btn">Play Solo</a>
+                        </div>
+                        <div class="mode-card">
+                            <div class="mode-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Multiplayer</h3>
+                            <p>Compete with friends for ultimate bragging rights</p>
+                            <a href="#" class="btn mode-btn">Play Together</a>
+                        </div>
+                        <div class="mode-card">
+                            <div class="mode-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h3>Challenge Mode</h3>
+                            <p>Test your skills with time-based challenges</p>
+                            <span class="coming-soon-badge">Coming Soon</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="testimonials">
+                    <h2 class="section-title">Player Reviews</h2>
+                    <div class="testimonial-cards">
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">
+                                <img src="assets/boy_avatar_1.png" alt="Player 1">
+                            </div>
+                            <div class="testimonial-content">
+                                <div class="testimonial-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p>"The mystery challenges make this game so much more exciting than the traditional version!"</p>
+                                <h4>Alex T.</h4>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">
+                                <img src="assets/profile.png" alt="Player 2">
+                            </div>
+                            <div class="testimonial-content">
+                                <div class="testimonial-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <p>"My kids love the animations and I love the nostalgia with a modern feel. Great family game!"</p>
+                                <h4>Samantha K.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-container">
+                <div class="footer-row">
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <img src="assets/snake_and_ladder.png" alt="Logo">
+                            <h3>Snake & Ladder</h3>
+                        </div>
+                        <p>Bringing the classic board game to life with modern twists and exciting challenges.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h3>Quick Links</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="how_to_play.html">How to Play</a></li>
+                            <li><a href="#">My Profile</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>Connect</h3>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-discord"></i></a>
+                        </div>
+                        <p class="copyright">© 2025 Snake & Ladder Game</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Game Mode Selection Modal -->
+    <div id="game-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn"><i class="fas fa-times"></i></span>
+            <h2>Select Game Mode</h2>
+            <div class="game-modes">
+                <div class="game-mode">
+                    <i class="fas fa-user game-icon"></i>
+                    <h3>Single Player</h3>
+                    <p>Play against the computer</p>
+                    <button class="btn mode-btn" data-mode="single">Select</button>
+                </div>
+                <div class="game-mode">
+                    <i class="fas fa-users game-icon"></i>
+                    <h3>Multiplayer</h3>
+                    <p>Play with friends (2-4 players)</p>
+                    <button class="btn mode-btn" data-mode="multi">Select</button>
+                </div>
+            </div>
+
+            <div class="game-difficulty">
+                <h3>Difficulty Level</h3>
+                <div class="difficulty-options">
+                    <div class="difficulty-option" data-difficulty="easy">
+                        <span class="difficulty-icon">🙂</span>
+                        <span>Easy</span>
+                    </div>
+                    <div class="difficulty-option" data-difficulty="medium">
+                        <span class="difficulty-icon">😐</span>
+                        <span>Medium</span>
+                    </div>
+                    <div class="difficulty-option" data-difficulty="hard">
+                        <span class="difficulty-icon">😈</span>
+                        <span>Hard</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="avatars">
+                <h3>Choose Your Avatar</h3>
+                <div class="avatar-selection">
+                    <img src="assets/boy_avatar_1.png" alt="Avatar 1" class="avatar-option" data-avatar="1">
+                    <img src="assets/boy_avatar_2.png" alt="Avatar 2" class="avatar-option" data-avatar="2">
+                    <img src="assets/profile.png" alt="Avatar 3" class="avatar-option" data-avatar="3">
+                    <img src="assets/human.png" alt="Avatar 4" class="avatar-option" data-avatar="4">
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="start-game-btn" class="btn primary-btn">Start Game</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- How to Play Modal -->
+    <div id="how-to-play-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn"><i class="fas fa-times"></i></span>
+            <h2>How to Play</h2>
+            <div class="instructions">
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Roll the Dice</h3>
+                        <p>Click on the dice to roll and move your piece forward</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Climb Ladders</h3>
+                        <p>Land on a ladder to climb up and advance quickly</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Avoid Snakes</h3>
+                        <p>Land on a snake head and you'll slide down to its tail</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Mystery Challenges</h3>
+                        <p>Accept or reject mystery challenges for bonuses or penalties</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Win the Game</h3>
+                        <p>Be the first player to reach square 100 to win!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary-btn close-modal-btn">Got It!</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="animated-background">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+        <div class="shape shape5"></div>
+    </div>
+
+    <script src="js/landing.js"></script>
+</body>
+</html>

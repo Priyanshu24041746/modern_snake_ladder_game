@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake and Ladder - Game Board</title>
+    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="css/gameboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+        <div class="toggle-ball"></div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/snake_and_ladder.png" alt="Snake and Ladder Logo">
+                <h1>Snake & Ladder</h1>
+            </div>
+            <div class="nav-links">
+                <a href="landing.html">Home</a>
+                <a href="how_to_play.html">How to Play</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main>
+            <div class="game-container">
+                <div class="game-info-panel">
+                    <div class="current-player-section">
+                        <h3>Current Player</h3>
+                        <div class="current-player">
+                            <div class="player-avatar">
+                                <img src="assets/boy_avatar_1.png" alt="Current Player" id="currentPlayerAvatar">
+                            </div>
+                            <div class="player-info">
+                                <h4 id="currentPlayerName">Player 1</h4>
+                                <span class="player-position" id="currentPlayerPosition">Position: 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dice-section">
+                        <h3>Roll Dice</h3>
+                        <div class="dice-container">
+                            <img src="assets/dice_face_1.png" alt="Dice" id="dice" class="dice">
+                            <button id="rollDiceBtn" class="roll-dice-btn">
+                                <i class="fas fa-dice"></i> Roll Dice
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="players-section">
+                        <h3>Players</h3>
+                        <div id="playersContainer" class="players-container">
+                            <!-- Players will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="game-controls">
+                        <button id="newGameBtn" class="btn secondary-btn">
+                            <i class="fas fa-redo"></i> New Game
+                        </button>
+                        <button id="homeBtn" class="btn primary-btn">
+                            <i class="fas fa-home"></i> Home
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="board-container">
+                    <div class="game-board" id="gameBoard">
+                        <!-- Game board will be dynamically generated -->
+                    </div>
+                    
+                    <!-- Player tokens will be positioned absolutely over the board -->
+                    <div class="tokens-container" id="tokensContainer">
+                        <!-- Player tokens will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="game-stats-panel">
+                    <div class="scorecard-section">
+                        <h3>Scorecard</h3>
+                        <div class="scorecard">
+                            <div class="scorecard-table">
+                                <div class="scorecard-header">
+                                    <div class="header-cell">Player</div>
+                                    <div class="header-cell">Position</div>
+                                    <div class="header-cell">Ladders</div>
+                                    <div class="header-cell">Snakes</div>
+                                    <div class="header-cell">Mystery</div>
+                                </div>
+                                <div id="scorecardBody" class="scorecard-body">
+                                    <!-- Scorecard rows will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-log-section">
+                        <h3>Game Log</h3>
+                        <div id="gameLog" class="game-log">
+                            <!-- Game events will be logged here -->
+                            <div class="log-entry">Game started! Good luck!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Game Elements Legend Modal -->
+    <div id="legendModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn"><i class="fas fa-times"></i></span>
+            <h2>Game Elements</h2>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-icon">
+                        <img src="assets/ladder.png" alt="Ladder">
+                    </div>
+                    <div class="legend-info">
+                        <h3>Ladders</h3>
+                        <p>Climb up to advance quickly when you land on a ladder base.</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-icon">
+                        <img src="assets/snake.png" alt="Snake">
+                    </div>
+                    <div class="legend-info">
+                        <h3>Snakes</h3>
+                        <p>Slide down when you land on a snake head.</p>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-icon">
+                        <img src="assets/mystery.png" alt="Mystery">
+                    </div>
+                    <div class="legend-info">
+                        <h3>Mystery Challenges</h3>
+                        <p>Land on a mystery square for a special challenge that could help or hinder your progress.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tutorial Modal -->
+    <div id="tutorialModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn"><i class="fas fa-times"></i></span>
+            <h2>How to Play</h2>
+            <div class="instructions">
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Take Turns</h3>
+                        <p>Players take turns rolling the dice and moving their token</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Roll to Start</h3>
+                        <p>Roll a 1 to unlock your token and start moving</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Climb Ladders</h3>
+                        <p>Land on a ladder to climb up and advance quickly</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Avoid Snakes</h3>
+                        <p>Land on a snake head and you'll slide down to its tail</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Mystery Challenges</h3>
+                        <p>Land on a mystery square for a special challenge</p>
+                    </div>
+                </div>
+                <div class="instruction-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Win the Game</h3>
+                        <p>Be the first player to reach square 100 to win!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn primary-btn close-modal-btn">Got It!</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="modal">
+        <div class="modal-content winner-modal-content">
+            <span class="close-btn"><i class="fas fa-times"></i></span>
+            <div class="winner-header">
+                <img src="assets/party.png" alt="Celebration" class="winner-icon">
+                <h2>Congratulations!</h2>
+                <img src="assets/party.png" alt="Celebration" class="winner-icon">
+            </div>
+            <div class="winner-info">
+                <div class="winner-avatar">
+                    <img id="winnerAvatar" src="assets/boy_avatar_1.png" alt="Winner Avatar">
+                </div>
+                <h3 id="winnerName">Player 1</h3>
+                <p>has won the game!</p>
+            </div>
+            
+            <div class="game-stats">
+                <h3>Game Statistics</h3>
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-dice"></i></div>
+                        <div class="stat-value" id="totalRolls">24</div>
+                        <div class="stat-label">Total Rolls</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><img src="assets/ladder.png" alt="Ladder" class="stat-img"></div>
+                        <div class="stat-value" id="laddersClimbed">3</div>
+                        <div class="stat-label">Ladders Climbed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><img src="assets/snake.png" alt="Snake" class="stat-img"></div>
+                        <div class="stat-value" id="snakesBitten">2</div>
+                        <div class="stat-label">Snake Bites</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><img src="assets/mystery.png" alt="Mystery" class="stat-img"></div>
+                        <div class="stat-value" id="mysteriesSolved">1</div>
+                        <div class="stat-label">Mysteries Solved</div>
+                    </div>
+                    <div class="stat-item luck-factor">
+                        <div class="stat-icon"><i class="fas fa-star"></i></div>
+                        <div class="stat-value" id="luckFactor">74%</div>
+                        <div class="stat-label">Luck Factor</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn secondary-btn"><i class="fas fa-redo"></i> Play Again</button>
+                <button id="returnHomeBtn" class="btn primary-btn"><i class="fas fa-home"></i> Return Home</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mystery Challenge Modal -->
+    <div id="mysteryModal" class="modal">
+        <div class="modal-content mystery-modal-content">
+            <span class="close-btn"><i class="fas fa-times"></i></span>
+            <div class="mystery-header">
+                <img src="assets/mystery.png" alt="Mystery" class="mystery-icon">
+                <h2>Mystery Challenge!</h2>
+            </div>
+            <div class="mystery-content">
+                <p id="mysteryDescription">You've landed on a mystery square! Accept this challenge?</p>
+            </div>
+            <div class="mystery-choices">
+                <button id="acceptMysteryBtn" class="btn primary-btn"><i class="fas fa-check"></i> Accept</button>
+                <button id="declineMysteryBtn" class="btn secondary-btn"><i class="fas fa-times"></i> Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="animated-background">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+        <div class="shape shape5"></div>
+    </div>
+
+    <script src="js/gameboard.js"></script>
+</body>
+</html>

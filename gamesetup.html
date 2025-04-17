@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake and Ladder - Game Setup</title>
+    <link rel="stylesheet" href="css/landing.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional styles specific to game setup */
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #ec4899;
+            --snake-color: #f43f5e;
+            --ladder-color: #14b8a6;
+            --mystery-color: #8b5cf6;
+            
+            /* Player token colors */
+            --player1-color: var(--snake-color);
+            --player2-color: #3b82f6;
+            --player3-color: var(--ladder-color);
+            --player4-color: #f59e0b;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #6366f1, #4f46e5);
+            --gradient-secondary: linear-gradient(135deg, #ec4899, #db2777);
+            --gradient-red: linear-gradient(135deg, #f43f5e, #e11d48);
+            --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb);
+            --gradient-green: linear-gradient(135deg, #14b8a6, #0d9488);
+            --gradient-yellow: linear-gradient(135deg, #f59e0b, #d97706);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            --gradient-pink: linear-gradient(135deg, #ec4899, #db2777);
+        }
+        
+        body {
+            overflow-y: auto;
+            max-height: none;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            height: auto;
+            overflow-y: visible;
+            padding-bottom: 2.5rem;
+        }
+        
+        /* Main Navigation */
+        .main-nav {
+            padding: 1rem 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+        }
+        
+        [data-theme="dark"] .main-nav {
+            background: rgba(30, 41, 59, 0.9);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Setup Container */
+        .setup-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card-light);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        [data-theme="dark"] .setup-container {
+            background: var(--card-dark);
+        }
+        
+        .setup-container::before {
+            content: '';
+            position: absolute;
+            top: -3.125rem;
+            right: -3.125rem;
+            width: 6.25rem;
+            height: 6.25rem;
+            background: var(--primary-color);
+            opacity: 0.1;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .setup-container::after {
+            content: '';
+            position: absolute;
+            bottom: -1.875rem;
+            left: -1.875rem;
+            width: 9.375rem;
+            height: 9.375rem;
+            background: var(--secondary-color);
+            opacity: 0.05;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .setup-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .setup-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.625rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .setup-header p {
+            color: var(--text-light-muted);
+            font-size: 1.125rem;
+            margin-top: 0.5rem;
+        }
+        
+        [data-theme="dark"] .setup-header p {
+            color: var(--text-dark-muted);
+        }
+        
+        /* Setup Content Grid */
+        .setup-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.875rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Setup Sections */
+        .setup-section {
+            background: var(--bg-light);
+            border-radius: var(--border-radius-lg);
+            padding: 1.875rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="dark"] .setup-section {
+            background: var(--bg-dark);
+        }
+        
+        .setup-section:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .setup-section h3 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        
+        .setup-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3.125rem;
+            height: 0.1875rem;
+            background: var(--gradient-primary);
+            border-radius: 0.1875rem;
+        }
+        
+        /* Game mode styles */
+        .game-modes {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        .game-mode {
+            flex: 1;
+            background: var(--card-light);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem 1.25rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 11.25rem;
+        }
+        
+        [data-theme="dark"] .game-mode {
+            background: var(--card-dark);
+        }
+        
+        .game-mode::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+        
+        .game-mode:hover::before {
+            opacity: 1;
+        }
+        
+        .game-mode.selected {
+            border-color: var(--primary-color);
+            transform: translateY(-0.3125rem);
+            box-shadow: 0 0.625rem 1.25rem rgba(99, 102, 241, 0.15);
+        }
+        
+        .game-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        
+        .game-mode:hover .game-icon {
+            transform: scale(1.2);
+        }
+        
+        .game-mode h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.625rem;
+            color: var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .game-mode h3::after {
+            width: 1.875rem;
+            bottom: -0.375rem;
+        }
+        
+        .game-mode p {
+            color: var(--text-light-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        [data-theme="dark"] .game-mode p {
+            color: var(--text-dark-muted);
+        }
+        
+        .mode-btn {
+            position: relative;
+            z-index: 1;
+            margin-top: 0.625rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-full);
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .mode-btn:hover {
+            transform: translateY(-0.1875rem);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Challenge mode style */
+        .challenge-mode {
+            position: relative;
+        }
+        
+        .coming-soon-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gradient-purple);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            z-index: 2;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Player count styles */
+        .player-count-options {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        
+        .player-count-option {
+            width: 3.75rem;
+            height: 3.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--card-light);
+            border: 2px solid transparent;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-sm);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        [data-theme="dark"] .player-count-option {
+            background: var(--card-dark);
+            color: var(--text-dark);
+        }
+        
+        .player-count-option:hover {
+            transform: scale(1.1) translateY(-0.3125rem);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .player-count-option.selected {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .player-count-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        /* Token color styles */
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .color-option {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.15) rotate(10deg);
+            border-color: white;
+            box-shadow: 0 0 0.9375rem rgba(255, 255, 255, 0.5);
+        }
+        
+        .color-option.selected {
+            border-color: white;
+            box-shadow: 0 0 1.25rem rgba(255, 255, 255, 0.7);
+            transform: scale(1.1);
+        }
+        
+        .color-option .color-player-label {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .color-red { background: var(--gradient-red); }
+        .color-blue { background: var(--gradient-blue); }
+        .color-green { background: var(--gradient-green); }
+        .color-yellow { background: var(--gradient-yellow); }
+        .color-purple { background: var(--gradient-purple); }
+        .color-pink { background: var(--gradient-pink); }
+        
+        /* Player setup section */
+        .players-setup {
+            grid-column: 1 / span 2;
+            margin-top: 1.25rem;
+        }
+        /* Reorder sections for desktop */
+        @media (min-width: 768px) {
+            .setup-content {
+                display: grid;
+                grid-template-areas: 
+                    "game-mode difficulty"
+                    "token-colors token-colors"
+                    "players-setup players-setup";
+            }
+            
+            .game-mode-section {
+                grid-area: game-mode;
+            }
+            
+            .difficulty-section {
+                grid-area: difficulty;
+            }
+            
+            .token-colors-section {
+                grid-area: token-colors;
+            }
+            
+            .players-setup {
+                grid-area: players-setup;
+            }
+        }
+        
+        .player-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .player-slot {
+            background: var(--card-light);
+            border-radius: var(--border-radius-lg);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.9375rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="dark"] .player-slot {
+            background: var(--card-dark);
+        }
+        
+        .player-slot::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0.3125rem;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .player-slot:hover::before {
+            opacity: 1;
+        }
+        
+        .player-slot:hover {
+            transform: translateY(-0.625rem);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .player-slot .player-number {
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            width: 2.25rem;
+            height: 2.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-sm);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .player-slot .player-avatar {
+            width: 5.3125rem;
+            height: 5.3125rem;
+            border-radius: 50%;
+            border: 0.25rem solid var(--border-color);
+            overflow: hidden;
+            margin: 0.625rem 0;
+            position: relative;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s ease;
+        }
+        
+        .player-slot .player-avatar:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+        
+        .player-slot .player-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .player-slot .player-avatar:hover img {
+            transform: scale(1.1);
+        }
+        
+        .change-avatar-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.625rem 1.25rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0.25rem 0.625rem rgba(99, 102, 241, 0.3);
+            margin-top: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+        
+        .change-avatar-btn:hover {
+            transform: translateY(-0.25rem);
+            box-shadow: 0 0.5rem 1rem rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, #7a7ef8, #4f46e5);
+        }
+        
+        .change-avatar-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0.125rem 0.375rem rgba(99, 102, 241, 0.3);
+        }
+        
+        .player-slot.computer {
+            border-color: var(--snake-color);
+        }
+        
+        .player-slot.computer .player-number {
+            background: var(--gradient-red);
+        }
+        
+        .player-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-light);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            transition: all var(--transition-normal);
+            font-size: 1rem;
+        }
+        
+        [data-theme="dark"] .player-input {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        
+        .player-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.1875rem rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+        
+        /* Player token color indicator */
+        .player-token-color {
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            border: 0.1875rem solid white;
+            position: absolute;
+            bottom: -0.3125rem;
+            right: -0.3125rem;
+            box-shadow: var(--shadow-md);
+            z-index: 2;
+        }
+        
+        /* Difficulty section */
+        .difficulty-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .difficulty-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 1rem 1.25rem;
+            background: var(--card-light);
+            border-radius: var(--border-radius-md);
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            min-width: 5.625rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="dark"] .difficulty-option {
+            background: var(--card-dark);
+        }
+        
+        .difficulty-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .difficulty-option:hover::before {
+            opacity: 1;
+        }
+        
+        .difficulty-option:hover {
+            transform: translateY(-0.5rem) scale(1.05);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .difficulty-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-0.3125rem);
+        }
+        
+        .difficulty-icon {
+            font-size: 1.75rem;
+            filter: drop-shadow(0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+        
+        .difficulty-option:hover .difficulty-icon {
+            transform: scale(1.2);
+        }
+        
+        .difficulty-option span:last-child {
+            font-weight: 600;
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        [data-theme="dark"] .difficulty-option span:last-child {
+            color: var(--text-dark);
+        }
+        
+        /* Avatar modal */
+        .avatar-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(0.3125rem);
+            -webkit-backdrop-filter: blur(0.3125rem);
+        }
+        
+        /* Improved avatar modal styling */
+        .avatar-modal-content {
+            background: var(--card-light);
+            border-radius: var(--border-radius-lg);
+            width: 90%;
+            max-width: 31.25rem;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.5s ease-out forwards;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1001;
+        }
+        
+        [data-theme="dark"] .avatar-modal-content {
+            background: var(--card-dark);
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-3.125rem) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .avatar-modal-content h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .avatar-modal-content h3::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5rem;
+            height: 0.1875rem;
+            background: var(--gradient-primary);
+            border-radius: 0.1875rem;
+        }
+        
+        .avatar-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.625rem;
+            margin-bottom: 1.5rem;
+            background: var(--bg-light);
+            padding: 0.5rem;
+            border-radius: var(--border-radius-full);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        [data-theme="dark"] .avatar-tabs {
+            background: var(--bg-dark);
+        }
+        
+        .avatar-tab {
+            padding: 0.5rem 1.25rem;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            transition: all 0.3s ease;
+            color: var(--text-light-muted);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        [data-theme="dark"] .avatar-tab {
+            color: var(--text-dark-muted);
+        }
+        
+        .avatar-tab.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .avatar-tab:hover:not(.active) {
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-option {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .avatar-option:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .avatar-option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.2);
+        }
+        
+        .avatar-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .avatar-option:hover img {
+            transform: scale(1.1);
+        }
+        
+        .avatar-color-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .avatar-color-section h4 {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        [data-theme="dark"] .avatar-color-section h4 {
+            color: var(--text-dark);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .modal-footer button {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-footer .primary-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .modal-footer .primary-btn:hover {
+            transform: translateY(-0.25rem);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal-footer .secondary-btn {
+            background: transparent;
+            color: var(--text-light-muted);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+        }
+        
+        [data-theme="dark"] .modal-footer .secondary-btn {
+            color: var(--text-dark-muted);
+        }
+        
+        .modal-footer .secondary-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+        <div class="toggle-ball"></div>
+    </div>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/snake_and_ladder.png" alt="Snake and Ladder Logo">
+                <h1>Snake & Ladder</h1>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">        
+        <main>
+            <div class="setup-container">
+                <div class="setup-header">
+                    <h2>Game Setup</h2>
+                    <p>Customize your adventure before the fun begins!</p>
+                </div>
+                
+                <div class="setup-content">
+                    <div class="setup-section game-mode-section">
+                        <h3>Game Mode</h3>
+                        <div class="game-modes">
+                            <div class="game-mode" data-mode="single">
+                                <div class="game-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h3>Single Player</h3>
+                                <p>Challenge the computer</p>
+                                <button class="btn mode-btn" data-mode="single">Select</button>
+                            </div>
+                            <div class="game-mode" data-mode="multi">
+                                <div class="game-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3>Multiplayer</h3>
+                                <p>Play with friends</p>
+                                <button class="btn mode-btn" data-mode="multi">Select</button>
+                            </div>
+                            <div class="game-mode challenge-mode" data-mode="challenge">
+                                <div class="coming-soon-badge">Coming Soon</div>
+                                <div class="game-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <h3>Challenge Mode</h3>
+                                <p>Special obstacles & events</p>
+                                <button class="btn mode-btn-disabled" disabled>Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setup-section difficulty-section" id="difficultySection">
+                        <h3>Difficulty Level</h3>
+                        <div class="difficulty-options">
+                            <div class="difficulty-option" data-difficulty="easy">
+                                <span class="difficulty-icon">🙂</span>
+                                <span>Easy</span>
+                            </div>
+                            <div class="difficulty-option" data-difficulty="medium">
+                                <span class="difficulty-icon">😐</span>
+                                <span>Medium</span>
+                            </div>
+                            <div class="difficulty-option" data-difficulty="hard">
+                                <span class="difficulty-icon">😈</span>
+                                <span>Hard</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setup-section token-colors-section">
+                        <h3>Token Colors</h3>
+                        <div class="color-options">
+                            <div class="color-option color-red" data-color="red"></div>
+                            <div class="color-option color-blue" data-color="blue"></div>
+                            <div class="color-option color-green" data-color="green"></div>
+                            <div class="color-option color-yellow" data-color="yellow"></div>
+                            <div class="color-option color-purple" data-color="purple"></div>
+                            <div class="color-option color-pink" data-color="pink"></div>
+                        </div>
+                        
+                        <div id="playerCountSection">
+                            <h3>Number of Players</h3>
+                            <div class="player-count-options">
+                                <div class="player-count-option" data-count="1">1</div>
+                                <div class="player-count-option" data-count="2">2</div>
+                                <div class="player-count-option" data-count="3">3</div>
+                                <div class="player-count-option" data-count="4">4</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setup-section players-setup">
+                        <h3>Player Setup</h3>
+                        <div class="player-slots" id="playerSlots">
+                            <!-- Player slots will be dynamically generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="setup-actions">
+                        <a href="landing.html" class="btn secondary-btn"><i class="fas fa-arrow-left"></i> Back</a>
+                        <button id="startGameBtn" class="btn primary-btn pulse-animation"><i class="fas fa-play"></i> Start Game</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Avatar Selection Modal -->
+    <div id="avatarModal" class="avatar-modal">
+        <div class="avatar-modal-content">
+            <h3>Choose Your Avatar</h3>
+            
+            <div class="avatar-tabs">
+                <div class="avatar-tab active" data-tab="avatars">Avatars</div>
+                <div class="avatar-tab" data-tab="emojis">Emojis</div>
+                <div class="avatar-tab" data-tab="animals">Animals</div>
+            </div>
+            
+            <div class="avatar-grid" id="avatarsTab">
+                <div class="avatar-option" data-avatar="boy_avatar_1">
+                    <img src="assets/boy_avatar_1.png" alt="Avatar 1">
+                </div>
+                <div class="avatar-option" data-avatar="boy_avatar_2">
+                    <img src="assets/boy_avatar_2.png" alt="Avatar 2">
+                </div>
+                <div class="avatar-option" data-avatar="profile">
+                    <img src="assets/profile.png" alt="Avatar 3">
+                </div>
+                <div class="avatar-option" data-avatar="human">
+                    <img src="assets/human.png" alt="Avatar 4">
+                </div>
+            </div>
+            
+            <div class="avatar-grid" id="emojisTab" style="display: none;">
+                <div class="avatar-option" data-avatar="happy">
+                    <img src="assets/happy.png" alt="Happy Emoji">
+                </div>
+                <div class="avatar-option" data-avatar="sad">
+                    <img src="assets/sad.png" alt="Sad Emoji">
+                </div>
+                <div class="avatar-option" data-avatar="emoji_angry">
+                    <img src="assets/emoji_angry.png" alt="Angry Emoji">
+                </div>
+                <div class="avatar-option" data-avatar="emoji_surprised">
+                    <img src="assets/emoji_surprised.png" alt="Surprised Emoji">
+                </div>
+                <div class="avatar-option" data-avatar="emoji_sorry">
+                    <img src="assets/emoji_sorry.png" alt="Sorry Emoji">
+                </div>
+                <div class="avatar-option" data-avatar="party">
+                    <img src="assets/party.png" alt="Party Emoji">
+                </div>
+            </div>
+            
+            <div class="avatar-grid" id="animalsTab" style="display: none;">
+                <div class="avatar-option" data-avatar="snake">
+                    <img src="assets/snake.png" alt="Snake">
+                </div>
+                <div class="avatar-option" data-avatar="king_cobra">
+                    <img src="assets/king_cobra.png" alt="King Cobra">
+                </div>
+                <div class="avatar-option" data-avatar="anaconda">
+                    <img src="assets/anaconda.png" alt="Anaconda">
+                </div>
+            </div>
+            
+            <div class="avatar-color-section">
+                <h4>Token Color</h4>
+                <div class="color-options">
+                    <div class="color-option color-red" data-color="red"></div>
+                    <div class="color-option color-blue" data-color="blue"></div>
+                    <div class="color-option color-green" data-color="green"></div>
+                    <div class="color-option color-yellow" data-color="yellow"></div>
+                    <div class="color-option color-purple" data-color="purple"></div>
+                    <div class="color-option color-pink" data-color="pink"></div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="closeAvatarModal" class="btn secondary-btn">Cancel</button>
+                <button id="selectAvatarBtn" class="btn primary-btn">Select</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="animated-background">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+        <div class="shape shape5"></div>
+    </div>
+
+    <script src="js/landing.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Default values
+            let gameMode = 'single';
+            let playerCount = 2;
+            let difficulty = 'medium';
+            let selectedPlayerForAvatar = null;
+            let selectedAvatar = 'boy_avatar_1';
+            let selectedColor = 'red';
+            
+            // Arrays to store player data
+            const players = [];
+            
+            // Initialize elements
+            const playerSlots = document.getElementById('playerSlots');
+            const avatarModal = document.getElementById('avatarModal');
+            const difficultySection = document.getElementById('difficultySection');
+            const playerCountSection = document.getElementById('playerCountSection');
+            
+            // Select game mode
+            document.querySelectorAll('.game-mode').forEach(mode => {
+                if (mode.getAttribute('data-mode') !== 'challenge') {
+                    mode.addEventListener('click', function() {
+                        const modeType = this.getAttribute('data-mode');
+                        document.querySelectorAll('.game-mode').forEach(m => m.classList.remove('selected'));
+                        this.classList.add('selected');
+                        gameMode = modeType;
+                        
+                        if (modeType === 'single') {
+                            difficultySection.style.display = 'block';
+                            // In single player mode, disable options for more than 1 human player
+                            document.querySelectorAll('.player-count-option').forEach(opt => {
+                                const count = parseInt(opt.getAttribute('data-count'));
+                                if (count > 1) {
+                                    opt.classList.add('disabled');
+                                } else {
+                                    opt.classList.remove('disabled');
+                                }
+                            });
+                            // Select player count 1 automatically for single player
+                            document.querySelector('.player-count-option[data-count="1"]').click();
+                        } else {
+                            difficultySection.style.display = 'none';
+                            // In multiplayer, enable all player count options
+                            document.querySelectorAll('.player-count-option').forEach(opt => {
+                                opt.classList.remove('disabled');
+                            });
+                            updatePlayerSlots(playerCount);
+                        }
+                    });
+                }
+            });
+            
+            // Button click handler for mode selection
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const modeType = this.getAttribute('data-mode');
+                    document.querySelectorAll('.game-mode').forEach(m => m.classList.remove('selected'));
+                    this.closest('.game-mode').classList.add('selected');
+                    gameMode = modeType;
+                    
+                    if (modeType === 'single') {
+                        difficultySection.style.display = 'block';
+                        // In single player mode, disable options for more than 1 human player
+                        document.querySelectorAll('.player-count-option').forEach(opt => {
+                            const count = parseInt(opt.getAttribute('data-count'));
+                            if (count > 1) {
+                                opt.classList.add('disabled');
+                            } else {
+                                opt.classList.remove('disabled');
+                            }
+                        });
+                        // Select player count 1 automatically for single player
+                        document.querySelector('.player-count-option[data-count="1"]').click();
+                    } else {
+                        difficultySection.style.display = 'none';
+                        // In multiplayer, enable all player count options
+                        document.querySelectorAll('.player-count-option').forEach(opt => {
+                            opt.classList.remove('disabled');
+                        });
+                        updatePlayerSlots(playerCount);
+                    }
+                });
+            });
+            
+            // Select player count
+            document.querySelectorAll('.player-count-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Skip if disabled
+                    if (this.classList.contains('disabled')) return;
+                    
+                    const count = parseInt(this.getAttribute('data-count'));
+                    document.querySelectorAll('.player-count-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    playerCount = count;
+                    updatePlayerSlots(count);
+                });
+            });
+            
+            // Select difficulty
+            document.querySelectorAll('.difficulty-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const diff = this.getAttribute('data-difficulty');
+                    document.querySelectorAll('.difficulty-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    difficulty = diff;
+                });
+            });
+            
+            // Select token color
+            document.querySelectorAll('.setup-section .color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const color = this.getAttribute('data-color');
+                    
+                    // If we already have a player selected, update their color
+                    if (selectedPlayerForAvatar) {
+                        const playerSlot = document.querySelector(`.player-slot[data-player="${selectedPlayerForAvatar}"]`);
+                        if (playerSlot) {
+                            // Update color in the UI
+                            updatePlayerColor(selectedPlayerForAvatar, color);
+                        }
+                    }
+                    
+                    // Mark this color as selected visually
+                    document.querySelectorAll('.setup-section .color-option').forEach(o => {
+                        o.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedColor = color;
+                });
+            });
+            
+            // Token color selection in avatar modal
+            document.querySelectorAll('.avatar-modal .color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const color = this.getAttribute('data-color');
+                    document.querySelectorAll('.avatar-modal .color-option').forEach(o => {
+                        o.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedColor = color;
+                });
+            });
+            
+            // Avatar tab selection
+            document.querySelectorAll('.avatar-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    document.querySelectorAll('.avatar-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Show selected tab content, hide others
+                    document.querySelectorAll('.avatar-grid').forEach(grid => {
+                        grid.style.display = 'none';
+                    });
+                    document.getElementById(`${tabId}Tab`).style.display = 'grid';
+                });
+            });
+            
+            // Avatar selection in modal
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const avatar = this.getAttribute('data-avatar');
+                    document.querySelectorAll('.avatar-option').forEach(o => {
+                        o.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedAvatar = avatar;
+                });
+            });
+            
+            // Modal actions
+            document.getElementById('closeAvatarModal').addEventListener('click', function() {
+                avatarModal.style.display = 'none';
+            });
+            
+            document.getElementById('selectAvatarBtn').addEventListener('click', function() {
+                // Apply selected avatar and color to the player slot
+                if (selectedPlayerForAvatar) {
+                    updatePlayerAvatar(selectedPlayerForAvatar, selectedAvatar);
+                    updatePlayerColor(selectedPlayerForAvatar, selectedColor);
+                }
+                avatarModal.style.display = 'none';
+            });
+            
+            // Start game button
+            document.getElementById('startGameBtn').addEventListener('click', function() {
+                // Collect all player data
+                const playersData = Array.from(document.querySelectorAll('.player-slot')).map(slot => {
+                    const playerId = slot.getAttribute('data-player');
+                    const isComputer = slot.classList.contains('computer');
+                    const playerName = slot.querySelector('.player-input').value.trim() || `Player ${playerId}`;
+                    const avatarImg = slot.querySelector('.player-avatar img');
+                    const avatar = avatarImg ? avatarImg.getAttribute('data-avatar') : 'boy_avatar_1';
+                    const colorEl = slot.querySelector('.player-token-color');
+                    const color = colorEl ? colorEl.getAttribute('data-color') : 'red';
+                    
+                    return {
+                        id: playerId,
+                        name: playerName,
+                        avatar: avatar,
+                        color: color,
+                        isComputer: isComputer
+                    };
+                });
+                
+                // Store player data to localStorage for the game to use
+                localStorage.setItem('snakeLadderPlayers', JSON.stringify(playersData));
+                localStorage.setItem('snakeLadderGameMode', gameMode);
+                localStorage.setItem('snakeLadderDifficulty', difficulty);
+                
+                // Navigate to the game board
+                window.location.href = 'gameboard.html';
+            });
+            
+            // Function to update player slots based on player count
+            function updatePlayerSlots(count) {
+                // Clear existing slots
+                playerSlots.innerHTML = '';
+                
+                // Create new player slots
+                for (let i = 1; i <= count; i++) {
+                    const isComputer = gameMode === 'single' && i > 1;
+                    const playerSlot = document.createElement('div');
+                    playerSlot.className = `player-slot${isComputer ? ' computer' : ''}`;
+                    playerSlot.setAttribute('data-player', i);
+                    
+                    // Player number badge
+                    const playerNumber = document.createElement('div');
+                    playerNumber.className = 'player-number';
+                    playerNumber.textContent = i;
+                    
+                    // Player avatar section
+                    const avatarContainer = document.createElement('div');
+                    avatarContainer.className = 'player-avatar';
+                    avatarContainer.setAttribute('data-player', i);
+                    
+                    const avatarImg = document.createElement('img');
+                    avatarImg.src = `assets/boy_avatar_${(i % 2) + 1}.png`;
+                    avatarImg.alt = `Player ${i} Avatar`;
+                    avatarImg.setAttribute('data-avatar', `boy_avatar_${(i % 2) + 1}`);
+                    
+                    avatarContainer.appendChild(avatarImg);
+                    
+                    // Add change avatar button
+                    const changeAvatarBtn = document.createElement('button');
+                    changeAvatarBtn.className = 'change-avatar-btn';
+                    changeAvatarBtn.innerHTML = '<i class="fas fa-user-edit"></i> Change Avatar';
+                    changeAvatarBtn.setAttribute('data-player', i);
+                    
+                    // Player name input
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.className = 'player-input';
+                    nameInput.placeholder = isComputer ? `Computer ${i-1}` : `Player ${i}`;
+                    nameInput.value = isComputer ? `Computer ${i-1}` : '';
+                    
+                    // Token color indicator (positioned absolutely)
+                    const tokenColor = document.createElement('div');
+                    tokenColor.className = 'player-token-color';
+                    tokenColor.style.background = getColorForPlayer(i);
+                    tokenColor.setAttribute('data-color', getColorNameForPlayer(i));
+                    
+                    // Assemble the player slot
+                    playerSlot.appendChild(playerNumber);
+                    playerSlot.appendChild(avatarContainer);
+                    playerSlot.appendChild(changeAvatarBtn);
+                    playerSlot.appendChild(nameInput);
+                    playerSlot.appendChild(tokenColor);
+                    
+                    playerSlots.appendChild(playerSlot);
+                    
+                    // Make computer player inputs readonly
+                    if (isComputer) {
+                        nameInput.readOnly = true;
+                    }
+                }
+                
+                // Add event listeners for avatar change buttons
+                document.querySelectorAll('.change-avatar-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const playerId = this.getAttribute('data-player');
+                        selectedPlayerForAvatar = playerId;
+                        
+                        // Get current avatar and color
+                        const playerSlot = document.querySelector(`.player-slot[data-player="${playerId}"]`);
+                        const avatarImg = playerSlot.querySelector('.player-avatar img');
+                        const currentAvatar = avatarImg ? avatarImg.getAttribute('data-avatar') : 'boy_avatar_1';
+                        
+                        const colorEl = playerSlot.querySelector('.player-token-color');
+                        const currentColor = colorEl ? colorEl.getAttribute('data-color') : 'red';
+                        
+                        // Select the current avatar in the modal
+                        document.querySelectorAll('.avatar-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                            if (opt.getAttribute('data-avatar') === currentAvatar) {
+                                opt.classList.add('selected');
+                            }
+                        });
+                        
+                        // Select the current color in the modal
+                        document.querySelectorAll('.avatar-modal .color-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                            if (opt.getAttribute('data-color') === currentColor) {
+                                opt.classList.add('selected');
+                            }
+                        });
+                        
+                        selectedAvatar = currentAvatar;
+                        selectedColor = currentColor;
+                        
+                        // Show the avatar modal
+                        avatarModal.style.display = 'flex';
+                    });
+                });
+            }
+            
+            // Helper function to get color for player index
+            function getColorForPlayer(index) {
+                const colors = {
+                    1: 'var(--gradient-red)',
+                    2: 'var(--gradient-blue)',
+                    3: 'var(--gradient-green)',
+                    4: 'var(--gradient-yellow)'
+                };
+                return colors[index] || colors[1];
+            }
+            
+            // Helper function to get color name for player index
+            function getColorNameForPlayer(index) {
+                const colors = {
+                    1: 'red',
+                    2: 'blue',
+                    3: 'green',
+                    4: 'yellow'
+                };
+                return colors[index] || 'red';
+            }
+            
+            // Update player avatar
+            function updatePlayerAvatar(playerId, avatar) {
+                const playerSlot = document.querySelector(`.player-slot[data-player="${playerId}"]`);
+                if (!playerSlot) return;
+                
+                const avatarImg = playerSlot.querySelector('.player-avatar img');
+                if (avatarImg) {
+                    avatarImg.src = `assets/${avatar}.png`;
+                    avatarImg.setAttribute('data-avatar', avatar);
+                }
+            }
+            
+            // Update player color
+            function updatePlayerColor(playerId, color) {
+                const playerSlot = document.querySelector(`.player-slot[data-player="${playerId}"]`);
+                if (!playerSlot) return;
+                
+                const tokenColor = playerSlot.querySelector('.player-token-color');
+                if (tokenColor) {
+                    tokenColor.className = 'player-token-color';
+                    tokenColor.classList.add(`color-${color}`);
+                    tokenColor.style.background = `var(--gradient-${color})`;
+                    tokenColor.setAttribute('data-color', color);
+                }
+            }
+            
+            // Initialize with defaults
+            document.querySelector('.game-mode[data-mode="single"]').classList.add('selected');
+            document.querySelector('.difficulty-option[data-difficulty="medium"]').classList.add('selected');
+            document.querySelector('.color-option[data-color="red"]').classList.add('selected');
+            document.querySelector('.player-count-option[data-count="2"]').classList.add('selected');
+            
+            // Initial setup
+            updatePlayerSlots(2);
+        });
+    </script>
+</body>
+</html>
