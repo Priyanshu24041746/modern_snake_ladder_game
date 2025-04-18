@@ -419,8 +419,32 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Set timeout to update dice face after animation
         setTimeout(() => {
-            // Update dice face
-            diceElement.src = `assets/dice_face_${diceValue}.png`;
+            // Update dice face with corrected file paths
+            let dicePath;
+            switch(diceValue) {
+                case 1:
+                    dicePath = 'assets/dice_face_1.png';
+                    break;
+                case 2:
+                    dicePath = 'assets/dice_face_2.png';
+                    break;
+                case 3:
+                    dicePath = 'assets/dice_face_3.png';
+                    break;
+                case 4:
+                    dicePath = 'assets/dice_face_4.png';
+                    break;
+                case 5:
+                    dicePath = 'assets/dice_face_5 .png'; // Note the space in file name
+                    break;
+                case 6:
+                    dicePath = 'assets/dice_face_6 (2).png'; // Note the parentheses
+                    break;
+                default:
+                    dicePath = 'assets/dice_face_1.png';
+            }
+            
+            diceElement.src = dicePath;
             diceElement.classList.remove('rolling');
             
             // Log the roll
@@ -680,10 +704,31 @@ document.addEventListener('DOMContentLoaded', function() {
         mysteryChallenge = mysteryChallenges[Math.floor(Math.random() * mysteryChallenges.length)];
         
         // Update the mystery modal with the challenge details
-        document.getElementById('mysteryDescription').textContent = mysteryChallenge.text;
+        const mysteryDesc = document.getElementById('mysteryDescription');
+        if (mysteryDesc) {
+            mysteryDesc.textContent = mysteryChallenge.text;
+        } else {
+            console.error('Mystery description element not found');
+        }
+        
+        // Highlight the mystery square
+        const mysteryCell = document.getElementById(`cell-${player.position}`);
+        if (mysteryCell) {
+            mysteryCell.classList.add('active-mystery');
+            setTimeout(() => {
+                mysteryCell.classList.remove('active-mystery');
+            }, 3000);
+        }
         
         // Open the mystery modal
-        openModal(mysteryModal);
+        const mysteryModal = document.getElementById('mysteryModal');
+        if (mysteryModal) {
+            openModal(mysteryModal);
+        } else {
+            console.error('Mystery modal not found');
+            // Fallback in case modal isn't found - apply effect automatically
+            applyMysteryEffect(player, mysteryChallenge.effect);
+        }
     }
     
     // Accept mystery challenge
