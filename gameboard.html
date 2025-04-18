@@ -44,15 +44,14 @@
                                 <span class="player-position" id="currentPlayerPosition">Position: 1</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="dice-section">
-                        <h3>Roll Dice</h3>
-                        <div class="dice-container">
-                            <img src="assets/dice_face_1.png" alt="Dice" id="dice" class="dice">
-                            <button id="rollDiceBtn" class="roll-dice-btn">
-                                <i class="fas fa-dice"></i> Roll Dice
-                            </button>
+                        <!-- Dice and Roll Button below player info -->
+                        <div class="dice-section">
+                            <div class="dice-container">
+                                <img src="assets/dice_face_1.png" alt="Dice" id="dice" class="dice">
+                                <button id="rollDiceBtn" class="btn primary-btn roll-dice-btn">
+                                    <i class="fas fa-dice"></i> Roll Dice
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
@@ -77,7 +76,6 @@
                     <div class="game-board" id="gameBoard">
                         <!-- Game board will be dynamically generated -->
                     </div>
-                    
                     <!-- Player tokens will be positioned absolutely over the board -->
                     <div class="tokens-container" id="tokensContainer">
                         <!-- Player tokens will be dynamically added here -->

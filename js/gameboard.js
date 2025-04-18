@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     color: "blue",
                     position: 0,
                     isLocked: true,
-                    isComputer: gameMode === 'single',
+                    isComputer: gameMode === 'single', // Only computer in single mode
                     stats: { rolls: 0, ladders: 0, snakes: 0, mysteries: 0 }
                 }
             ];
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     color: player.color,
                     position: 0,
                     isLocked: true,
-                    isComputer: player.isComputer,
+                    isComputer: gameMode === 'single' ? player.isComputer : false, // Force all to human in multiplayer
                     stats: { rolls: 0, ladders: 0, snakes: 0, mysteries: 0 }
                 };
             });
@@ -168,13 +168,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function createGameBoard() {
         gameBoard.innerHTML = '';
         
-        // Create cells in reverse row order for bottom-to-top layout
-        let cellNumber = TOTAL_CELLS;
-        let direction = -1; // -1 for right to left, 1 for left to right
+        // Create cells starting from 1 at bottom left
+        let cellNumber = 1;
+        let direction = 1; // 1 for left to right, -1 for right to left
         
-        for (let row = 0; row < BOARD_SIZE; row++) {
-            direction *= -1; // Flip direction each row
-            
+        for (let row = BOARD_SIZE - 1; row >= 0; row--) {
             for (let col = 0; col < BOARD_SIZE; col++) {
                 // Determine actual column based on direction
                 const actualCol = direction === 1 ? col : BOARD_SIZE - 1 - col;
@@ -256,8 +254,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add cell to board
                 gameBoard.appendChild(cell);
                 
-                cellNumber--;
+                cellNumber++;
             }
+            
+            // Flip direction for next row (snake pattern)
+            direction *= -1;
         }
     }
     
@@ -567,6 +568,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // Play ladder sound
         playSound('ladder');
         
+        // Animate from and to cells
+        const fromCell = document.getElementById(`cell-${fromPos}`);
+        const toCell = document.getElementById(`cell-${toPos}`);
+        if (fromCell) {
+            fromCell.classList.add('ladder-animate');
+            showMoveLabel(fromCell, `Ladder!`);
+            setTimeout(() => fromCell.classList.remove('ladder-animate'), 1200);
+        }
+        if (toCell) {
+            toCell.classList.add('ladder-animate');
+            setTimeout(() => toCell.classList.remove('ladder-animate'), 1200);
+        }
+        
         // Add climbing animation
         token.classList.add('climbing');
         
@@ -603,6 +617,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // Play snake sound
         playSound('snake');
         
+        // Animate from and to cells
+        const fromCell = document.getElementById(`cell-${fromPos}`);
+        const toCell = document.getElementById(`cell-${toPos}`);
+        if (fromCell) {
+            fromCell.classList.add('snake-animate');
+            showMoveLabel(fromCell, `Snake!`);
+            setTimeout(() => fromCell.classList.remove('snake-animate'), 1200);
+        }
+        if (toCell) {
+            toCell.classList.add('snake-animate');
+            setTimeout(() => toCell.classList.remove('snake-animate'), 1200);
+        }
+        
         // Add sliding animation
         token.classList.add('sliding');
         
@@ -623,6 +650,18 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 checkSpecialSquare(player);
             }, 500);
+        }, 1200);
+    }
+    
+    // Show move label (arrow/label for snake/ladder)
+    function showMoveLabel(cell, text) {
+        if (!cell) return;
+        const label = document.createElement('div');
+        label.className = 'move-label';
+        label.textContent = text;
+        cell.appendChild(label);
+        setTimeout(() => {
+            if (label.parentNode) label.parentNode.removeChild(label);
         }, 1200);
     }
     
