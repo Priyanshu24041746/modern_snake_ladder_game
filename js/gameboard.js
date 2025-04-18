@@ -1,10 +1,11 @@
 // Gameboard.js - Snakes and Ladders Game
 document.addEventListener('DOMContentLoaded', function() {
-    // Game elements
+    // Game elements - Added support for new UI elements
     const gameBoard = document.getElementById('gameBoard');
     const tokensContainer = document.getElementById('tokensContainer');
     const rollDiceBtn = document.getElementById('rollDiceBtn');
     const diceElement = document.getElementById('dice');
+    const diceContainer = document.getElementById('diceContainer');
     const currentPlayerAvatar = document.getElementById('currentPlayerAvatar');
     const currentPlayerName = document.getElementById('currentPlayerName');
     const currentPlayerPosition = document.getElementById('currentPlayerPosition');
@@ -13,7 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const gameLog = document.getElementById('gameLog');
     const newGameBtn = document.getElementById('newGameBtn');
     const homeBtn = document.getElementById('homeBtn');
-    
+    const legendBtn = document.getElementById('legendBtn');
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+
     // Modal elements
     const tutorialModal = document.getElementById('tutorialModal');
     const legendModal = document.getElementById('legendModal');
@@ -34,6 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const snakesBitten = document.getElementById('snakesBitten');
     const mysteriesSolved = document.getElementById('mysteriesSolved');
     const luckFactor = document.getElementById('luckFactor');
+    
+    // Sound settings
+    let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
     
     // Game constants
     const BOARD_SIZE = 10;
@@ -56,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     const ladders = {
-        1: 38,
+        // Removed ladder from square 1
         4: 14,
         9: 31,
         21: 42,
@@ -167,58 +173,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create the game board
     function createGameBoard() {
         gameBoard.innerHTML = '';
-        
-        // Create cells starting from 1 at bottom left
-        let cellNumber = 1;
+        // Create cells starting from 1 at top left, criss-cross (snake) numbering
         let direction = 1; // 1 for left to right, -1 for right to left
-        
-        for (let row = BOARD_SIZE - 1; row >= 0; row--) {
+        for (let row = 0; row < BOARD_SIZE; row++) {
+            let start = row * BOARD_SIZE + 1;
+            let end = (row + 1) * BOARD_SIZE;
+            let cells = [];
             for (let col = 0; col < BOARD_SIZE; col++) {
-                // Determine actual column based on direction
-                const actualCol = direction === 1 ? col : BOARD_SIZE - 1 - col;
-                
-                // Create cell element
+                let cellNumber = direction === 1 ? start + col : end - col;
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.id = `cell-${cellNumber}`;
                 cell.setAttribute('data-number', cellNumber);
-                
-                // Add cell number
                 const numberElement = document.createElement('div');
                 numberElement.className = 'cell-number';
                 numberElement.textContent = cellNumber;
                 cell.appendChild(numberElement);
-                
-                // Add special elements (snakes, ladders, mysteries)
                 if (snakes[cellNumber]) {
                     cell.classList.add('snake-head');
-                    
-                    // Add snake image
                     const snakeElement = document.createElement('img');
                     snakeElement.className = 'special-element snake-element';
                     snakeElement.src = 'assets/snake.png';
                     snakeElement.alt = 'Snake';
                     cell.appendChild(snakeElement);
-                    
-                    // Find snake tail cell
                     const tailCell = document.getElementById(`cell-${snakes[cellNumber]}`);
                     if (tailCell) {
                         tailCell.classList.add('snake-tail');
                     }
                 }
-                
                 if (Object.values(ladders).includes(cellNumber)) {
                     cell.classList.add('ladder-end');
-                    
-                    // Find ladder start
                     const ladderStart = Object.keys(ladders).find(key => ladders[key] === cellNumber);
                     if (ladderStart) {
-                        // Find ladder start cell
                         const startCell = document.getElementById(`cell-${ladderStart}`);
                         if (startCell) {
                             startCell.classList.add('ladder-start');
-                            
-                            // Add ladder image to start cell
                             const ladderElement = document.createElement('img');
                             ladderElement.className = 'special-element ladder-element';
                             ladderElement.src = 'assets/ladder.png';
@@ -227,37 +216,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                 }
-                
                 if (mysterySquares.includes(cellNumber)) {
                     cell.classList.add('mystery');
-                    
-                    // Add mystery image
                     const mysteryElement = document.createElement('img');
                     mysteryElement.className = 'special-element mystery-element';
                     mysteryElement.src = 'assets/mystery.png';
                     mysteryElement.alt = 'Mystery';
                     cell.appendChild(mysteryElement);
                 }
-                
-                // For the 100th cell (winner cell)
                 if (cellNumber === 100) {
                     cell.classList.add('winner-cell');
-                    
-                    // Add trophy or flag image
                     const trophyElement = document.createElement('img');
                     trophyElement.className = 'special-element';
                     trophyElement.src = 'assets/success.png';
                     trophyElement.alt = 'Finish';
                     cell.appendChild(trophyElement);
                 }
-                
-                // Add cell to board
                 gameBoard.appendChild(cell);
-                
-                cellNumber++;
             }
-            
-            // Flip direction for next row (snake pattern)
             direction *= -1;
         }
     }
@@ -292,26 +268,26 @@ document.addEventListener('DOMContentLoaded', function() {
         token.style.transform = 'translateY(calc(100% + 20px))';
     }
     
-    // Position token at a specific cell
+    // Position token at a specific cell using grid math for accuracy
     function positionTokenAtCell(token, cellNumber, playerIndex) {
-        if (cellNumber < 1) return; // Don't position if not on the board yet
-        
-        const cell = document.getElementById(`cell-${cellNumber}`);
-        if (!cell) return;
-        
-        const cellRect = cell.getBoundingClientRect();
-        const boardRect = gameBoard.getBoundingClientRect();
-        
-        // Calculate relative position within the board
-        const top = (cellRect.top - boardRect.top) + (cellRect.height / 2);
-        const left = (cellRect.left - boardRect.left) + (cellRect.width / 2);
-        
-        // Apply slight offset based on player index to avoid overlap
-        const offsetX = ((playerIndex % 2) * 20) - 10;
-        const offsetY = (Math.floor(playerIndex / 2) * 20) - 10;
-        
-        token.style.top = `${top + offsetY}px`;
-        token.style.left = `${left + offsetX}px`;
+        if (cellNumber < 1 || cellNumber > 100) return;
+        const boardSize = 10;
+        const n = cellNumber - 1;
+        const row = Math.floor(n / boardSize);
+        let col;
+        if (row % 2 === 0) {
+            col = n % boardSize;
+        } else {
+            col = boardSize - 1 - (n % boardSize);
+        }
+        const cellSize = 100 / boardSize;
+        const topPercent = (row + 0.5) * cellSize;
+        const leftPercent = (col + 0.5) * cellSize;
+        const offsetX = ((playerIndex % 2) * 18) - 9;
+        const offsetY = (Math.floor(playerIndex / 2) * 18) - 9;
+        token.style.position = 'absolute';
+        token.style.top = `calc(${topPercent}% + ${offsetY}px)`;
+        token.style.left = `calc(${leftPercent}% + ${offsetX}px)`;
         token.style.transform = 'translate(-50%, -50%)';
     }
     
@@ -398,28 +374,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Roll the dice
+    // Roll the dice with enhanced animation
     function rollDice() {
         if (rollInProgress || !gameActive) return;
-        
         rollInProgress = true;
         const player = players[currentPlayerIndex];
-        
-        // Animate dice rolling
+        // Enhanced dice animation (null check for diceContainer)
+        if (diceContainer) diceContainer.classList.add('shake');
         diceElement.classList.add('rolling');
-        
-        // Track rolls in player stats
         player.stats.rolls++;
-        
-        // Play dice sound
         playSound('dice');
-        
-        // Generate random dice value
         diceValue = Math.floor(Math.random() * 6) + 1;
-        
-        // Set timeout to update dice face after animation
+        // Reduce animation delay for faster dice roll
         setTimeout(() => {
-            // Update dice face with corrected file paths
             let dicePath;
             switch(diceValue) {
                 case 1:
@@ -435,26 +402,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     dicePath = 'assets/dice_face_4.png';
                     break;
                 case 5:
-                    dicePath = 'assets/dice_face_5 .png'; // Note the space in file name
+                    dicePath = 'assets/dice_face_5 .png';
                     break;
                 case 6:
-                    dicePath = 'assets/dice_face_6 (2).png'; // Note the parentheses
+                    dicePath = 'assets/dice_face_6 (2).png';
                     break;
                 default:
                     dicePath = 'assets/dice_face_1.png';
             }
-            
             diceElement.src = dicePath;
             diceElement.classList.remove('rolling');
-            
-            // Log the roll
+            if (diceContainer) diceContainer.classList.remove('shake');
             addLogEntry(`${player.name} rolled a ${diceValue}!`, 'highlight');
-            
-            // Move player after a short delay
             setTimeout(() => {
                 movePlayer(player, diceValue);
-            }, 500);
-        }, 1000);
+            }, 200); // Faster move after dice roll
+        }, 250); // Faster dice animation
     }
     
     // Move player
@@ -608,6 +571,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add climbing animation
         token.classList.add('climbing');
         
+        // Create path animation
+        createPathAnimation(fromPos, toPos, 'ladder');
+        
         // Update player position
         player.position = toPos;
         
@@ -657,6 +623,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add sliding animation
         token.classList.add('sliding');
         
+        // Create path animation
+        createPathAnimation(fromPos, toPos, 'snake');
+        
         // Update player position
         player.position = toPos;
         
@@ -687,6 +656,64 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             if (label.parentNode) label.parentNode.removeChild(label);
         }, 1200);
+    }
+    
+    // Show animation path for ladder climb
+    function createPathAnimation(fromPos, toPos, type) {
+        // Get cell positions
+        const fromCell = document.getElementById(`cell-${fromPos}`);
+        const toCell = document.getElementById(`cell-${toPos}`);
+        
+        if (!fromCell || !toCell) return;
+        
+        const boardRect = gameBoard.getBoundingClientRect();
+        const fromRect = fromCell.getBoundingClientRect();
+        const toRect = toCell.getBoundingClientRect();
+        
+        // Calculate relative positions
+        const fromX = (fromRect.left + fromRect.width/2) - boardRect.left;
+        const fromY = (fromRect.top + fromRect.height/2) - boardRect.top;
+        const toX = (toRect.left + toRect.width/2) - boardRect.left;
+        const toY = (toRect.top + toRect.height/2) - boardRect.top;
+        
+        // Create path element
+        const path = document.createElement('div');
+        path.className = `movement-path ${type}-path`;
+        
+        // Create arrow points along the path
+        const pointsCount = 5; // Number of arrow points
+        
+        for (let i = 1; i < pointsCount; i++) {
+            const point = document.createElement('div');
+            point.className = `path-point ${type}-point`;
+            
+            // Position along the path
+            const ratio = i / pointsCount;
+            const x = fromX + (toX - fromX) * ratio;
+            const y = fromY + (toY - fromY) * ratio;
+            
+            point.style.left = `${x}px`;
+            point.style.top = `${y}px`;
+            
+            // Animation delay for sequential appearance
+            point.style.animationDelay = `${i * 0.1}s`;
+            
+            // Add direction indication
+            const arrowChar = type === 'ladder' ? '↑' : '↓';
+            point.textContent = arrowChar;
+            
+            path.appendChild(point);
+        }
+        
+        // Add path to the board
+        gameBoard.appendChild(path);
+        
+        // Remove path after animation
+        setTimeout(() => {
+            if (path.parentNode) {
+                path.parentNode.removeChild(path);
+            }
+        }, 1500);
     }
     
     // Handle mystery challenge
@@ -893,8 +920,42 @@ document.addEventListener('DOMContentLoaded', function() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
         rollInProgress = false;
         
+        // Add turn change animation
+        animatePlayerChange();
+        
         // Update UI
         updateCurrentPlayerUI();
+    }
+
+    // Animate player change
+    function animatePlayerChange() {
+        // Get the player info container
+        const playerInfo = document.querySelector('.current-player');
+        if (!playerInfo) return;
+        
+        // Add animation class
+        playerInfo.classList.add('turn-change');
+        
+        // Play turn change sound
+        playSound('turnChange');
+        
+        // Get the new player's token
+        const newPlayer = players[currentPlayerIndex];
+        const token = document.getElementById(`player-token-${newPlayer.id}`);
+        if (token) {
+            // Add attention animation to the token
+            token.classList.add('attention');
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                token.classList.remove('attention');
+            }, 2000);
+        }
+        
+        // Remove animation class after animation completes
+        setTimeout(() => {
+            playerInfo.classList.remove('turn-change');
+        }, 1000);
     }
     
     // Handle win condition
@@ -978,6 +1039,12 @@ document.addEventListener('DOMContentLoaded', function() {
             positionTokenAtStart(token, players.indexOf(player));
         });
         
+        // Use fixed positions: 5 ladders, 5 snakes, 5 mysteries
+        // (No randomization)
+        
+        // Recreate game board with fixed positions
+        createGameBoard();
+        
         // Reset game state
         currentPlayerIndex = 0;
         gameActive = true;
@@ -1009,6 +1076,13 @@ document.addEventListener('DOMContentLoaded', function() {
         homeBtn.addEventListener('click', () => {
             window.location.href = 'index.html';
         });
+        
+        // Legend button 
+        if (legendBtn) {
+            legendBtn.addEventListener('click', () => {
+                openModal(legendModal);
+            });
+        }
         
         // Close modal buttons
         closeButtons.forEach(btn => {
@@ -1055,14 +1129,53 @@ document.addEventListener('DOMContentLoaded', function() {
             themeToggle.addEventListener('click', toggleTheme);
         }
         
+        // Sound toggle
+        if (soundToggleBtn) {
+            soundToggleBtn.addEventListener('click', toggleSound);
+            // Set initial state based on saved preference
+            updateSoundButtonState();
+        }
+        
         // Load saved theme preference
         loadThemePreference();
     }
     
-    // Play sound effects (placeholder function)
+    // Update sound button state
+    function updateSoundButtonState() {
+        if (soundToggleBtn) {
+            if (soundEnabled) {
+                soundToggleBtn.classList.remove('sound-off');
+                soundToggleBtn.classList.add('sound-on');
+                soundToggleBtn.title = "Sound On (Click to mute)";
+            } else {
+                soundToggleBtn.classList.remove('sound-on');
+                soundToggleBtn.classList.add('sound-off');
+                soundToggleBtn.title = "Sound Off (Click to unmute)";
+            }
+        }
+    }
+    
+    // Play sound effects based on sound setting
     function playSound(type) {
-        // In a full implementation, this would play actual sound effects
+        // If sound is disabled, don't play anything
+        if (!soundEnabled) return;
+        
+        // In a real implementation, this would play actual sound files
         console.log(`Playing sound: ${type}`);
+        
+        // Here we would have code to play different sound effects based on type
+        // For example: const sound = new Audio(`assets/sounds/${type}.mp3`); sound.play();
+    }
+
+    // Toggle sound on/off
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        
+        // Update button appearance
+        updateSoundButtonState();
+        
+        // Save setting
+        localStorage.setItem('soundEnabled', soundEnabled);
     }
     
     // Open modal

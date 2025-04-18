@@ -6,7 +6,7 @@
     <title>Snake and Ladder - Game Board</title>
     <link rel="stylesheet" href="css/landing.css">
     <link rel="stylesheet" href="css/gameboard.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -23,8 +23,8 @@
                 <h1>Snake & Ladder</h1>
             </div>
             <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="how_to_play.html">How to Play</a>
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="how_to_play.html"><i class="fas fa-question-circle"></i> How to Play</a>
             </div>
         </div>
     </nav>
@@ -32,36 +32,49 @@
     <div class="container">
         <main>
             <div class="game-container">
+                <!-- Left Panel: Game Information -->
                 <div class="game-info-panel">
-                    <div class="current-player-section">
-                        <h3>Current Player</h3>
-                        <div class="current-player">
-                            <div class="player-avatar">
-                                <img src="assets/boy_avatar_1.png" alt="Current Player" id="currentPlayerAvatar">
-                            </div>
-                            <div class="player-info">
-                                <h4 id="currentPlayerName">Player 1</h4>
-                                <span class="player-position" id="currentPlayerPosition">Position: 1</span>
-                            </div>
+                    <!-- Current Player Section -->
+                    <div class="panel current-player-section">
+                        <div class="panel-header">
+                            <i class="fas fa-user"></i> Current Player
                         </div>
-                        <!-- Dice and Roll Button below player info -->
-                        <div class="dice-section">
-                            <div class="dice-container">
-                                <img src="assets/dice_face_1.png" alt="Dice" id="dice" class="dice">
-                                <button id="rollDiceBtn" class="btn primary-btn roll-dice-btn">
-                                    <i class="fas fa-dice"></i> Roll Dice
-                                </button>
+                        <div class="panel-body">
+                            <div class="current-player">
+                                <div class="player-avatar">
+                                    <img src="assets/boy_avatar_1.png" alt="Current Player" id="currentPlayerAvatar">
+                                </div>
+                                <div class="player-info">
+                                    <h4 id="currentPlayerName">Player 1</h4>
+                                    <span class="player-position" id="currentPlayerPosition">Position: 1</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Dice and Roll Button -->
+                            <div class="dice-section">
+                                <div class="dice-container">
+                                    <img src="assets/dice_face_1.png" alt="Dice" id="dice" class="dice">
+                                    <button id="rollDiceBtn" class="btn primary-btn roll-dice-btn">
+                                        <i class="fas fa-dice"></i> Roll Dice
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="players-section">
-                        <h3>Players</h3>
-                        <div id="playersContainer" class="players-container">
-                            <!-- Players will be dynamically added here -->
+                    <!-- Players List Section -->
+                    <div class="panel players-section">
+                        <div class="panel-header">
+                            <i class="fas fa-users"></i> Players
+                        </div>
+                        <div class="panel-body">
+                            <div id="playersContainer" class="players-container">
+                                <!-- Players will be dynamically added here -->
+                            </div>
                         </div>
                     </div>
                     
+                    <!-- Game Controls -->
                     <div class="game-controls">
                         <button id="newGameBtn" class="btn secondary-btn">
                             <i class="fas fa-redo"></i> New Game
@@ -72,6 +85,7 @@
                     </div>
                 </div>
                 
+                <!-- Center: Game Board -->
                 <div class="board-container">
                     <div class="game-board" id="gameBoard">
                         <!-- Game board will be dynamically generated -->
@@ -82,30 +96,41 @@
                     </div>
                 </div>
                 
+                <!-- Right Panel: Game Stats -->
                 <div class="game-stats-panel">
-                    <div class="scorecard-section">
-                        <h3>Scorecard</h3>
-                        <div class="scorecard">
-                            <div class="scorecard-table">
-                                <div class="scorecard-header">
-                                    <div class="header-cell">Player</div>
-                                    <div class="header-cell">Position</div>
-                                    <div class="header-cell">Ladders</div>
-                                    <div class="header-cell">Snakes</div>
-                                    <div class="header-cell">Mystery</div>
-                                </div>
-                                <div id="scorecardBody" class="scorecard-body">
-                                    <!-- Scorecard rows will be dynamically added here -->
+                    <!-- Scorecard Section -->
+                    <div class="panel scorecard-section">
+                        <div class="panel-header">
+                            <i class="fas fa-chart-bar"></i> Scorecard
+                        </div>
+                        <div class="panel-body">
+                            <div class="scorecard">
+                                <div class="scorecard-table">
+                                    <div class="scorecard-header">
+                                        <div class="header-cell">Player</div>
+                                        <div class="header-cell">Position</div>
+                                        <div class="header-cell">Ladders</div>
+                                        <div class="header-cell">Snakes</div>
+                                        <div class="header-cell">Mystery</div>
+                                    </div>
+                                    <div id="scorecardBody" class="scorecard-body">
+                                        <!-- Scorecard rows will be dynamically added here -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="game-log-section">
-                        <h3>Game Log</h3>
-                        <div id="gameLog" class="game-log">
-                            <!-- Game events will be logged here -->
-                            <div class="log-entry">Game started! Good luck!</div>
+                    <!-- Game Log Section -->
+                    <div class="panel game-log-section">
+                        <div class="panel-header">
+                            <i class="fas fa-list"></i> Game Log
+                        </div>
+                        <div class="panel-body">
+                            <div id="gameLog" class="game-log">
+                                <!-- Game events will be logged here -->
+                                <div class="log-entry">Game started! Good luck!</div>
+                            </div>
                         </div>
                     </div>
                 </div>
